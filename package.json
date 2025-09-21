@@ -1,0 +1,15 @@
+{
+  "name": "revalto",
+  "version": "1.0.0",
+  "description": "A modern reselling marketplace where users can list, discover, and revalue products. Built for simplicity and trust, Revalto enables people to resell items seamlessly while ensuring transparent pricing and secure exchanges.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
