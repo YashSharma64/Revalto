@@ -1,16 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
+model user {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  anonymous_name String
+  gender         Gender
+  phone          String   @unique
+  hostel         Hostel
+  room_number    Int
+  is_anonymous   Boolean
+  created_at     DateTime @default(now())
+}
+
+enum Hostel {
+  Your_Space_01
+  Your_Space_02
+  UniSpace_Boys
+  UniSpace_Girls
+}
+
+enum Gender {
+  Male
+  Female
+  Others
+}
