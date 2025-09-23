@@ -9,17 +9,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model user {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique
-  anonymous_name String
-  gender         Gender
-  phone          String   @unique
-  hostel         Hostel
-  room_number    Int
-  is_anonymous   Boolean
-  created_at     DateTime @default(now())
+enum AcademicYear {
+  First
+  Second
+  Third
+  Fourth
 }
 
 enum Hostel {
@@ -33,4 +27,71 @@ enum Gender {
   Male
   Female
   Others
+}
+
+model users {
+  id               Int          @id @default(autoincrement())
+  name             String
+  email            String       @unique
+  password         String // stores bcrypr hash
+  anonymousName    String
+  gender           Gender
+  phone            String       @unique
+  hostel           Hostel
+  roomNumber       Int
+  isAnonymous      Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  imgUrl           String? // Cloudinary image URL
+  annonymousImgUrl String?
+  academicYear     AcademicYear
+  post           posts[]
+  buyer buyers[]
+}
+
+
+enum Condition {
+  NEW           // Brand new
+  LIKE_NEW      // Almost like new
+  GOOD          // Fully functional, minor signs of wear
+  FAIR          // Visible wear, still usable
+  POOR          // Heavily used, may have defects
+}
+
+enum WarrantyPeriod {
+  LESS_THAN_1_MONTH
+  ONE_TO_THREE_MONTHS
+  THREE_TO_SIX_MONTHS
+  SIX_TO_NINE_MONTHS
+  NINE_TO_TWELVE_MONTHS 
+  MORE_THAN_1_YEAR
+}
+model posts {
+  id         Int    @id @default(autoincrement())
+  itemName   String
+  itemImgUrl String // Cloudinary image URL
+  description String @db.Text
+  originalPrice Float 
+  secondHandPrice Float
+  condition Condition 
+  warrantyRemaining WarrantyPeriod
+  isAvailable Boolean
+  authorId   Int
+  author     users  @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  buyer buyers[]
+}
+
+enum Status {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
+model buyers{
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  post      posts    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  buyerId   Int
+  buyer     users    @relation(fields: [buyerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now())
+  status Status @default(PENDING) // pending, accepted, rejected
 }
