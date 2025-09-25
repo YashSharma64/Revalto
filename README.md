@@ -36,13 +36,6 @@ Why let valuable items go to waste? Revalto helps students:
 
 ---
 
-## 📚 Project Setup
-
-1. **Clone the repo**  
-```bash
-git clone https://github.com/your-username/revalto.git
-cd revalto
-
 ## 👨‍💻 Team Revalto
 
 We are 5 passionate builders working together:  
