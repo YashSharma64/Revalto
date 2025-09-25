@@ -38,12 +38,11 @@ Why let valuable items go to waste? Revalto helps students:
 
 ## 👨‍💻 Team Revalto
 
-We are 5 passionate builders working together:  
+We are 4 passionate builders working together:  
 - **Rohan** – Backend & Database  
 - **Yash Sharma** – UI/UX & Product Vision  
 - **Yashraj** – App Development  
 - **Kundan** – Machine Learning & Data Logic  
-- **Saubhagya** – Motivation & Community Spirit  
 
 ---
 
