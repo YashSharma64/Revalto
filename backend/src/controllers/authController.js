@@ -12,9 +12,19 @@ const isAdypuEmail = (email) => {
 
 export const createUser = async (req, res) => {
 
-  const { name, email, password } = req.body;
+  const { 
+    name, 
+    email, 
+    password, 
+    userName, 
+    gender, 
+    phone, 
+    hostel, 
+    roomNumber, 
+    academicYear // All nine required fields must be destructured
+  } = req.body;
   try {
-    if (!name || !email || !password) {
+    if (!userName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const newEmail = email.toLowerCase();
@@ -24,7 +34,7 @@ export const createUser = async (req, res) => {
          message: 'Only @adypu.edu.in email addresses are allowed.',
     });
     }
-    const existingUser = await prisma.user.findFirst({                              
+    const existingUser = await prisma.user.findUnique({                              
         where : {
             email : newEmail
         }
@@ -39,8 +49,15 @@ export const createUser = async (req, res) => {
     const newUser = await prisma.user.create({
         data : {
             name: name,
-            email: newEmail,
-            password: hashedPassword,
+            email: newEmail, // Assumed to be a processed email (e.g., lowercase)
+            password: hashedPassword, // Assumed to be the bcrypt hash
+            userName: userName, // Now included
+            gender: gender, // Required Enum
+            phone: phone, // Required String
+            hostel: hostel, // Required Enum
+            // IMPORTANT: roomNumber must be an Int, so we use parseInt()
+            roomNumber: parseInt(roomNumber, 10), 
+            academicYear: academicYear // Required Enum
         }
     });
     return res.status(201).json({ message: "User registered successfully",user: { id: newUser.id, name: newUser.name, email: newUser.email }, });
@@ -91,11 +108,11 @@ export const loginUser = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    return res.json({
+    return res.status(200).json({
       message: "Login successful",
       user: {
         id: user.id,
-        name: user.name,
+        userName: user.userName,
         email: user.email
       },
     });

@@ -28,7 +28,7 @@ function BrandLogo() {
   );
 }
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <div className="relative h-screen w-full bg-black text-white overflow-hidden">
       
@@ -40,7 +40,7 @@ export default function LoginPage() {
         
         <div className="relative z-10 flex items-center justify-center bg-zinc-900 p-8">
           <div className="w-full max-w-md">
-            <LoginForm className="text-white" mode="login"/>
+            <LoginForm className="text-white" mode="Sign up"/>
           </div>
         </div>
 

@@ -56,6 +56,7 @@ cd revalto
 ```bash
 cd backend
 npm install
+npx prisma generate
 ```
 
 #### Create a `.env` file in the backend directory:
@@ -65,6 +66,7 @@ PORT=3000
 DATABASE_URL="your database url obtained from supabase"
 DIRECT_URL="your database direct url obtained from supabase"
 JWT_SECRET=your_secret_key
+REFRESH_SECRET=your_refresh_key
 ```
 
 #### Start the backend server:
@@ -106,7 +108,7 @@ We are 4 passionate builders working together:
 - **Rohan** – Backend & Database  
 - **Yash Sharma** – UI/UX & Product Vision  
 - **Yashraj** – App Development  
-- **Kundan** – Machine Learning & Data Logic  
+- **Kundan** – Backend, Machine Learning & Data Logic  
 
 ---
 
