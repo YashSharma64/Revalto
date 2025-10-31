@@ -1,7 +1,5 @@
-
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/loginpage.jsx"; // ✅ relative path
+import Login from "./pages/loginpage.jsx"; 
 import Homepage from "./pages/homepage.jsx";
 
 function App() {

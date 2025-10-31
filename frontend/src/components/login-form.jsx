@@ -9,31 +9,39 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { api } from "./services/api"
+import { useNavigate } from "react-router-dom"
 
-function LoginForm({
-  className,
-  onSubmit,
-  ...props
-}) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGitHubLoading, setIsGitHubLoading] = useState(false);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // call consumer-provided submit if present
-    try {
-      setIsSubmitting(true);
-      if (typeof onSubmit === 'function') {
-        await Promise.resolve(onSubmit(e));
-      } else {
-        const form = e.currentTarget;
-        const data = Object.fromEntries(new FormData(form).entries());
-        console.log('LoginForm submit', data);
-        await new Promise(r => setTimeout(r, 1000));
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
+function LoginForm({className, onSubmit, ...props}) {
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isGitHubLoading, setIsGitHubLoading] = useState(false);
+    const navigate = useNavigate()
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        setIsSubmitting(true);
+        if (typeof onSubmit === 'function') {
+          await Promise.resolve(onSubmit(e));
+        } else {
+          const form = e.currentTarget;
+          const data = Object.fromEntries(new FormData(form).entries());
+          console.log('LoginForm submit', data);
+          const response = await api.post('/login',data,{withCredentials:true})
+          console.log("Server response:", response.data);
+
+          if(response.status == 200){
+            console.log('Login Successful: ', response.data)
+            navigate('/')
+          }else{
+            alert("Login failed: " + (response.data?.message || "Unknown error"));
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsSubmitting(false);
     }
   };
 
@@ -58,7 +66,7 @@ function LoginForm({
         </div>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" name="email" type="email" placeholder="m@adypu.edu.in" required />
         </Field>
         <Field>
           <div className="flex items-center">
@@ -67,14 +75,14 @@ function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" name="password" type="password" required />
         </Field>
         <Field>
           <Button
             type="submit"
             disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="hover:shadow-md active:scale-[0.98] transition-transform duration-150 !bg-white !text-black hover:!bg-white/90"
+            className="hover:shadow-md active:scale-[0.98] transition-transform duration-150 bg-white text-black hover:!bg-white/90"
           >
             {isSubmitting ? (
               <span className="inline-flex items-center gap-2">
