@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 
 export default function Homepage() {
+  const [userName, setUserName] = useState("");
+    useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setUserName(user.userName); 
+    }
+  }, []);
   return (
     <div className="min-h-screen w-full bg-gray-100 text-gray-900">
       <div className="w-full bg-gray-100">
@@ -40,17 +48,24 @@ export default function Homepage() {
               <input
                 type="text"
                 placeholder="Search products here..."
-                className="w-230 rounded-xl border border-gray-300 bg-white py-3.5 pl-16 pr-4 text-sm outline-none placeholder:text-gray-400"
+                className=" min-w-[800px] rounded-xl border border-gray-300 bg-white py-3.5 pl-16 pr-4 text-sm outline-none placeholder:text-gray-400"
               />
             </div>
           </div>
 
-          <div className="flex justify-center items-center gap-15 shrink-0 mr-20">
-            <img
-              src="/user.png"
-              alt="Header actions"
-              className="h-10 w-auto sm:h-8"
-            />
+          <div className="flex justify-center items-center gap-15 shrink-0 mr-20 ml-10">
+            <div className="flex items-center gap-2">
+              <img
+                src="/user.png"
+                alt="Header actions"
+                className="h-10 w-auto sm:h-8"
+              />
+              {userName && (
+                <span className="text-lg font-medium text-gray-800 capitalize">
+                  {userName}
+                </span>
+              )}
+            </div>
             <img
               src="/shopping-cart.png"
               alt="Header actions"

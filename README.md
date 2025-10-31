@@ -36,13 +36,79 @@ Why let valuable items go to waste? Revalto helps students:
 
 ---
 
+## ⚙️ Local Setup Guide
+
+Follow these steps to set up **Revalto** on your local machine 👇
+
+---
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/revalto.git
+cd revalto
+```
+
+---
+
+### 2️⃣ Backend Setup
+
+```bash
+cd backend
+npm install
+npx prisma generate
+```
+
+#### Create a `.env` file in the backend directory:
+
+```bash
+PORT=3000
+DATABASE_URL="your database url obtained from supabase"
+DIRECT_URL="your database direct url obtained from supabase"
+JWT_SECRET=your_secret_key
+REFRESH_SECRET=your_refresh_key
+```
+
+#### Start the backend server:
+
+```bash
+npm run dev
+```
+
+> Default runs on **[http://localhost:3000](http://localhost:3000)**
+
+---
+
+### 3️⃣ Frontend Setup
+
+```bash
+cd ../frontend
+npm install
+```
+
+#### Create a `.env` file in the frontend directory:
+
+```bash
+REACT_APP_API_URL=http://localhost:3000
+```
+
+#### Start the React app:
+
+```bash
+npm run dev
+```
+
+> Default runs on **[http://localhost:5173](http://localhost:5173)**
+
+---
+
 ## 👨‍💻 Team Revalto
 
 We are 4 passionate builders working together:  
 - **Rohan** – Backend & Database  
 - **Yash Sharma** – UI/UX & Product Vision  
 - **Yashraj** – App Development  
-- **Kundan** – Machine Learning & Data Logic  
+- **Kundan** – Backend, Machine Learning & Data Logic  
 
 ---
 

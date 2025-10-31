@@ -16,7 +16,7 @@ export const createUser = async (req, res) => {
     name, 
     email, 
     password, 
-    anonymousName, 
+    userName, 
     gender, 
     phone, 
     hostel, 
@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
     academicYear // All nine required fields must be destructured
   } = req.body;
   try {
-    if (!name || !email || !password) {
+    if (!userName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const newEmail = email.toLowerCase();
@@ -51,7 +51,7 @@ export const createUser = async (req, res) => {
             name: name,
             email: newEmail, // Assumed to be a processed email (e.g., lowercase)
             password: hashedPassword, // Assumed to be the bcrypt hash
-            anonymousName: anonymousName, // Now included
+            userName: userName, // Now included
             gender: gender, // Required Enum
             phone: phone, // Required String
             hostel: hostel, // Required Enum
@@ -112,7 +112,7 @@ export const loginUser = async (req, res) => {
       message: "Login successful",
       user: {
         id: user.id,
-        name: user.name,
+        userName: user.userName,
         email: user.email
       },
     });
