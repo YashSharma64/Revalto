@@ -72,23 +72,22 @@ enum PaymentStatus {
 
 model User {
   id                 Int          @id @default(autoincrement())
-  name               String
+  name               String?
   email              String       @unique
   password           String // stores bcrypt hash
-  anonymousName      String       @unique
-  gender             Gender
-  phone              String       @unique
-  hostel             Hostel
-  roomNumber         Int
+  userName           String       @unique
+  gender             Gender?
+  phone              String?      @unique
+  hostel             Hostel?
+  roomNumber         Int?
   isVerified         Boolean      @default(false)
   isProfileAnonymous Boolean      @default(true)
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
   imgUrl             String?
   annonymousImgUrl   String?
-  academicYear       AcademicYear
+  academicYear       AcademicYear?
 
-  // Relations
   posts            Post[]
   purchaseRequests PurchaseRequest[]
   ordersAsBuyer    Order[]           @relation("BuyerOrders")
@@ -113,7 +112,6 @@ model Post {
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
-  // Relations
   authorId            Int
   author              User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
   purchaseRequests    PurchaseRequest[]
@@ -128,7 +126,6 @@ model PurchaseRequest {
   updatedAt DateTime @updatedAt
   status    RequestStatus @default(PENDING) 
 
-  // Relations
   postId    Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   buyerId   Int
@@ -144,12 +141,11 @@ model PurchaseRequest {
 model Order {
   id                Int           @id @default(autoincrement())
   createdAt         DateTime      @default(now())
-  amount            Float // Amount paid (could be partial or full)
+  amount            Float                                 // Amount paid (could be partial or full)
   paymentType       PaymentType   @default(ADVANCE)
-  paymentIntentId   String        @unique // From Stripe/Razorpay
-  paymentStatus     PaymentStatus @default(PENDING) // <-- This is the only status now
+  paymentIntentId   String        @unique                 // From Stripe/Razorpay
+  paymentStatus     PaymentStatus @default(PENDING)       // <-- This is the only status now
 
-  // Relations
   postId            Int
   post              Post            @relation(fields: [postId], references: [id])
   buyerId           Int
@@ -164,7 +160,6 @@ model Conversation {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  // Relations
   userAId   Int
   userA     User     @relation("UserA", fields: [userAId], references: [id])
   userBId   Int
@@ -186,7 +181,6 @@ model Message {
   text           String
   createdAt      DateTime @default(now())
 
-  // Relations
   conversationId Int
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
