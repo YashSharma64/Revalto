@@ -66,36 +66,64 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
     }
   };
 
+  const isDarkTheme = className?.includes('text-white');
+  
   return (
     <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
-      <FieldGroup>
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="text-muted-foreground text-sm text-balance">{subtitle}</p>
+      <FieldGroup className="gap-8">
+        <div className="flex flex-col items-center gap-2 text-center mb-2">
+          <h1 className={cn("text-3xl font-bold tracking-tight", isDarkTheme ? "text-white" : "text-gray-900")}>{title}</h1>
+          <p className={cn("text-sm text-balance max-w-sm", isDarkTheme ? "text-gray-300" : "text-gray-500")}>{subtitle}</p>
         </div>
 
         {!isLogin && (
           <Field>
-            <FieldLabel htmlFor="username">Username</FieldLabel>
-            <Input id="username" name="userName" type="text" placeholder="john_doe" required />
+            <FieldLabel htmlFor="username" className={cn("font-medium mb-2", isDarkTheme ? "text-gray-200" : "text-gray-700")}>Username</FieldLabel>
+            <Input 
+              id="username" 
+              name="userName" 
+              type="text" 
+              placeholder="john_doe" 
+              required 
+              className={cn("h-11 transition-colors outline-none focus:outline-none focus-visible:ring-0", isDarkTheme 
+                ? "border-zinc-700 focus:border-white bg-zinc-800/50 focus:bg-zinc-800 text-white placeholder:text-zinc-400" 
+                : "border-gray-300 focus:border-gray-900 bg-gray-50 focus:bg-white")}
+            />
           </Field>
         )}
 
         <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" name="email" type="email" placeholder="m@adypu.edu.in" required />
+          <FieldLabel htmlFor="email" className={cn("font-medium mb-2", isDarkTheme ? "text-gray-200" : "text-gray-700")}>Email</FieldLabel>
+          <Input 
+            id="email" 
+            name="email" 
+            type="email" 
+            placeholder="m@adypu.edu.in" 
+            required 
+            className={cn("h-11 transition-colors outline-none focus:outline-none focus-visible:ring-0", isDarkTheme 
+              ? "border-zinc-700 focus:border-white bg-zinc-800/50 focus:bg-zinc-800 text-white placeholder:text-zinc-400" 
+              : "border-gray-300 focus:border-gray-900 bg-gray-50 focus:bg-white")}
+          />
         </Field>
 
         <Field>
-          <div className="flex items-center">
-            <FieldLabel htmlFor="password">Password</FieldLabel>
+          <div className="flex items-center mb-2">
+            <FieldLabel htmlFor="password" className={cn("font-medium", isDarkTheme ? "text-gray-200" : "text-gray-700")}>Password</FieldLabel>
             {isLogin && (
-              <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
-                Forgot your password?
+              <a href="#" className={cn("ml-auto text-sm underline-offset-4 hover:underline font-medium transition-colors", isDarkTheme ? "text-gray-400 hover:text-gray-200" : "text-gray-600 hover:text-gray-900")}>
+                Forgot password?
               </a>
             )}
           </div>
-          <Input id="password" name="password" type="password" required />
+          <Input 
+            id="password" 
+            name="password" 
+            type="password" 
+            required 
+            className={cn("h-11 transition-colors outline-none focus:outline-none focus-visible:ring-0", isDarkTheme 
+              ? "border-zinc-700 focus:border-white bg-zinc-800/50 focus:bg-zinc-800 text-white placeholder:text-zinc-400" 
+              : "border-gray-300 focus:border-gray-900 bg-gray-50 focus:bg-white")}
+          />
         </Field>
 
         <Field>
@@ -103,7 +131,9 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
             type="submit"
             disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="hover:shadow-md active:scale-[0.98] transition-transform duration-150 bg-white text-black hover:!bg-white/90"
+            className={cn("h-11 hover:shadow-lg active:scale-[0.98] transition-all duration-150 w-full font-medium text-base rounded-lg", isDarkTheme 
+              ? "bg-white text-black hover:!bg-gray-100" 
+              : "bg-gray-900 text-white hover:!bg-gray-800")}
           >
             {isSubmitting ? (
               <span className="inline-flex items-center gap-2">
@@ -124,7 +154,9 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
             type="button"
             disabled={isGitHubLoading}
             onClick={handleGithub}
-            className="hover:shadow-sm active:scale-[0.98] transition-transform duration-150 !text-white hover:!text-white border-white/30 hover:bg-white/10"
+            className={cn("h-11 hover:shadow-md active:scale-[0.98] transition-all duration-150 w-full font-medium text-base rounded-lg", isDarkTheme 
+              ? "text-white hover:!text-white border-white/30 hover:bg-white/10 hover:border-white/50" 
+              : "text-gray-900 hover:!text-gray-900 border-gray-300 hover:bg-gray-50 hover:border-gray-400")}
           >
             {isGitHubLoading ? (
               <svg className="animate-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -165,13 +197,13 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
             )}
           </Button>
 
-          <FieldDescription className="text-center">
+          <FieldDescription className={cn("text-center mt-2", isDarkTheme ? "text-gray-400" : "text-gray-600")}>
             {isLogin ? (
               <>Don&apos;t have an account?{" "}
-                <a href="/register" className="underline underline-offset-4">Sign up</a></>
+                <a href="/register" className={cn("underline underline-offset-4 font-semibold transition-colors", isDarkTheme ? "text-white hover:text-gray-300" : "text-gray-900 hover:text-gray-700")}>Sign up</a></>
             ) : (
               <>Already have an account?{" "}
-                <a href="/login" className="underline underline-offset-4">Login</a></>
+                <a href="/login" className={cn("underline underline-offset-4 font-semibold transition-colors", isDarkTheme ? "text-white hover:text-gray-300" : "text-gray-900 hover:text-gray-700")}>Login</a></>
             )}
           </FieldDescription>
         </Field>

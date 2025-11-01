@@ -1,0 +1,11 @@
+/* Prevent layout shift from scrollbar */
+html {
+  overflow-y: scroll;
+}
+
+/* Ensure consistent navbar width */
+body {
+  margin: 0;
+  padding: 0;
+}
+
