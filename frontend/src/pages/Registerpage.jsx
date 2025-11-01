@@ -9,9 +9,9 @@ export default function RegisterPage() {
       <div className="grid min-h-[calc(100vh-80px)] w-full grid-cols-1 md:grid-cols-2 overflow-hidden">
         
         {/* Form Section */}
-        <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-8 md:p-12 overflow-auto">
+        <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4 sm:p-6 md:p-8 lg:p-12 overflow-auto">
           <div className="w-full max-w-md">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-10">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8 md:p-10">
               <LoginForm className="text-gray-900" mode="Sign up"/>
             </div>
           </div>
