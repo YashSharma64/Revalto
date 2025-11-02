@@ -1,8 +1,11 @@
 import LoginForm from "@/components/login-form.jsx";
+import Navbar from "@/components/Navbar";
 
 export default function LoginPage() {
   return (
+    
     <div className="min-h-screen w-full bg-gray-100 text-gray-900">
+      <Navbar/>
       <div className="grid min-h-screen w-full grid-cols-1 md:grid-cols-2 overflow-hidden">
         
         {/* Form Section */}
