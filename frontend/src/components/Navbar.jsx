@@ -4,24 +4,11 @@ import RevaltoLogoIcon from "@/assets/RevaltoLogo";
 import LocationIcon from "@/assets/LocationIcon";
 import SearchIcon from "@/assets/SearchIcon";
 import UserDropdown from "./UserDropdown";
-import { api } from "./services/api"
-import { 
-  ShoppingBag, 
-  Home, 
-  ToyBrick, 
-  Apple, 
-  Headphones, 
-  Sparkles, 
-  Shirt,
-  Heart
-} from "lucide-react";
 
 export default function Navbar() {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [posts,setPosts] = useState([])
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,9 +27,7 @@ export default function Navbar() {
     };
 
     checkUser();
-    // Check user on storage change (for cross-tab updates)
     window.addEventListener("storage", checkUser);
-    // Also check periodically for same-tab updates
     const interval = setInterval(checkUser, 1000);
 
     return () => {
@@ -51,210 +36,72 @@ export default function Navbar() {
     };
   }, []);
 
-  //------------------This comes together for {Category Navigation Bar}--------------//. 162-256 --> Line Numbers for HTML
-
-    useEffect(() => {
-    const fetchPosts = async () => {
-      const endpoint =
-        activeCategory === "All" ? "/posts" : `/posts/${activeCategory}`;
-
-      try {
-        const response = await api.get(endpoint);
-        setPosts(response.data);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-        setPosts([]); // in case of error, avoid breaking the UI
-      }
-    };
-
-    fetchPosts();
-  }, [activeCategory]);
-  //-------------------------------------------------------------------------------------//
-
   return (
-    <>
-      {/* Top branding bar */}
-      <div className="w-full bg-gray-100 border-b border-gray-200">
-        
-      </div>
+    <div className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 w-full">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4 justify-between py-3 sm:py-4 w-full">
+          {/* Logo Section */}
+          <div 
+            className="flex items-center gap-2 sm:gap-3 shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate("/")}
+          >
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <RevaltoLogoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-gray-900 flex-shrink-0" />
+              <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight whitespace-nowrap">
+                Revalto
+              </span>
+            </div>
+          </div>
 
-      {/* Main Navigation Bar */}
-      <div className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 w-full">
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 justify-between py-3 sm:py-4 w-full">
-            
-            {/* Logo Section */}
-            <div 
-              className="flex items-center gap-2 sm:gap-3 shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => navigate("/")}
-            >
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <RevaltoLogoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-gray-900 flex-shrink-0" />
-                <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight whitespace-nowrap">
-                  Revalto
+          {/* Location Button - Hidden on mobile */}
+          <button className="hidden md:inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 px-3 lg:px-4 py-2 sm:py-2.5 transition-colors shrink-0 whitespace-nowrap">
+            <LocationIcon className="w-[18px] h-[18px] text-gray-600 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700 hidden lg:inline">Location</span>
+          </button>
+
+          {/* Search Bar - Responsive */}
+          <div className="flex-1 min-w-0 max-w-2xl mx-2 sm:mx-3 md:mx-4 hidden sm:block">
+            <div className="relative w-full">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 sm:pl-4 text-gray-400">
+                <SearchIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full rounded-xl border border-gray-300 bg-gray-50 hover:bg-white focus:bg-white focus:border-gray-600 transition-colors py-2 sm:py-2.5 md:py-3 pl-9 sm:pl-12 pr-3 sm:pr-4 text-xs sm:text-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-500/20"
+              />
+            </div>
+          </div>
+
+          {/* Mobile Search Button */}
+          <button className="sm:hidden p-2 hover:bg-gray-50 rounded-lg transition-colors">
+            <SearchIcon className="w-5 h-5 text-gray-600" />
+          </button>
+
+          {/* Right side actions */}
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 shrink-0">
+            {isLoggedIn ? (
+              <UserDropdown userName={userName} userEmail={userEmail} />
+            ) : (
+              <div 
+                className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors flex-shrink-0"
+                onClick={() => navigate("/login")}
+              >
+                <img src="/user.png" alt="User" className="h-8 w-8 flex-shrink-0" />
+                <span className="text-sm font-medium text-gray-800 capitalize hidden md:block whitespace-nowrap">
+                  Login
                 </span>
               </div>
-            </div>
-
-            {/* Location Button - Hidden on mobile */}
-            <button className="hidden md:inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 px-3 lg:px-4 py-2 sm:py-2.5 transition-colors shrink-0 whitespace-nowrap">
-            <LocationIcon className="w-[18px] h-[18px] text-gray-600 flex-shrink-0" />
-              <span className="text-sm font-medium text-gray-700 hidden lg:inline">Location</span>
+            )}
+            <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
+              <img src="/shopping-cart.png" alt="Shopping cart" className="h-8 w-8 flex-shrink-0" />
             </button>
-
-            {/* Search Bar - Responsive */}
-            <div className="flex-1 min-w-0 max-w-2xl mx-2 sm:mx-3 md:mx-4 hidden sm:block">
-              <div className="relative w-full">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 sm:pl-4 text-gray-400">
-                  <SearchIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full rounded-xl border border-gray-300 bg-gray-50 hover:bg-white focus:bg-white focus:border-gray-600 transition-colors py-2 sm:py-2.5 md:py-3 pl-9 sm:pl-12 pr-3 sm:pr-4 text-xs sm:text-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-gray-500/20"
-                />
-              </div>
-            </div>
-
-            {/* Mobile Search Button */}
-            <button className="sm:hidden p-2 hover:bg-gray-50 rounded-lg transition-colors">
-              <SearchIcon className="w-5 h-5 text-gray-600" />
+            <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
+              <img src="/loan.png" alt="Loan" className="h-8 w-8 flex-shrink-0" />
             </button>
-
-            {/* Right side actions */}
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 shrink-0">
-              {isLoggedIn ? (
-                <UserDropdown userName={userName} userEmail={userEmail} />
-              ) : (
-                <div 
-                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors flex-shrink-0"
-                  onClick={() => navigate("/login")}
-                >
-                  <img
-                    src="/user.png"
-                    alt="User"
-                    className="h-8 w-8 flex-shrink-0"
-                  />
-                  <span className="text-sm font-medium text-gray-800 capitalize hidden md:block whitespace-nowrap">
-                    Login
-                  </span>
-                </div>
-              )}
-              <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
-                <img
-                  src="/shopping-cart.png"
-                  alt="Shopping cart"
-                  className="h-8 w-8 flex-shrink-0"
-                />
-              </button>
-              <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
-                <img
-                  src="/loan.png"
-                  alt="Loan"
-                  className="h-8 w-8 flex-shrink-0"
-                />
-              </button>
-            </div>
           </div>
         </div>
       </div>
-
-      {/* Category Navigation Bar */}
-      <div className="w-full bg-white border-b border-gray-200">
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6">
-          <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 overflow-x-auto py-3 sm:py-4 scrollbar-hide">
-            {[
-              { id: "All", name: "All", icon: ShoppingBag, showHeart: true },
-              { id: "Accessories", name: "Accessories", icon: ToyBrick },
-              { id: "Food", name: "Food", icon: Apple },
-              { id: "Electronics", name: "Electronics", icon: Headphones },
-              { id: "Beauty", name: "Beauty", icon: Sparkles },
-              { id: "Fashion", name: "Fashion", icon: Shirt },
-            ].map((category) => {
-              const Icon = category.icon;
-              const isActive = activeCategory === category.id;
-              
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => {
-                    setActiveCategory(category.id)
-                    // Yaha pe filtering logic add krna hai or navigation logic add krna hai
-                    // navigate(`/?category=${category.id}`);
-                  }}
-                  className="flex flex-col items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 transition-colors hover:opacity-80 flex-shrink-0 relative group"
-                >
-                  <div className="relative">
-                    {category.showHeart && isActive ? (
-                      <div className="relative flex items-center justify-center">
-                        <Icon 
-                          className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'text-blue-600' : 'text-gray-600'}`}
-                        />
-                        <Heart 
-                          className="absolute w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 fill-blue-600 -top-0.5 -right-0.5 sm:-top-1 sm:-right-1" 
-                        />
-                      </div>
-                    ) : (
-                      <Icon 
-                        className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'text-blue-600' : 'text-gray-600'}`}
-                      />
-                    )}
-                  </div>
-                  <span 
-                    className={`text-xs sm:text-sm font-medium whitespace-nowrap ${
-                      isActive ? 'text-blue-600' : 'text-gray-600'
-                    }`}
-                  >
-                    {category.name}
-                  </span>
-                  {isActive && (
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-blue-600 rounded-full"></div>
-                  )}
-                </button>
-              );
-            })}
-            
-          </div>
-        </div>
-      </div>
-            {/* Posts Section */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {posts.map((post) => (
-              <div
-                key={post.id}
-                className="border rounded-xl p-4 hover:shadow-md transition-shadow"
-              >
-                <img
-                  src={post.itemImgUrl}
-                  alt={post.itemName}
-                  className="w-full h-48 object-cover rounded-lg mb-3"
-                />
-                <h3 className="font-semibold text-gray-800 text-lg truncate">
-                  {post.itemName}
-                </h3>
-                <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                  {post.description}
-                </p>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-gray-500 text-sm line-through">
-                    ₹{post.originalPrice}
-                  </span>
-                  <span className="text-blue-600 font-semibold">
-                    ₹{post.secondHandPrice}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center text-gray-500 py-10">
-            No posts found. Choose a category to see items.
-          </div>
-        )}
-      </div>
-    </>
+    </div>
   );
 }
-
