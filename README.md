@@ -106,7 +106,7 @@ npm run dev
 
 We are 4 passionate builders working together:  
 - **Rohan** – Backend & Database  
-- **Yash Sharma** – UI/UX & Product Vision  
+- **Yash Sharma** – UI/UX, Frontend Development & Product Vision 
 - **Yashraj** – App Development  
 - **Kundan** – Backend, Machine Learning & Data Logic  
 
