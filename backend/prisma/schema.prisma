@@ -63,6 +63,13 @@ enum PaymentStatus {
   SUCCEEDED
   FAILED
 }
+enum Category {
+  Accessories
+  Food
+  Electronics
+  Beauty
+  Fashion
+}
 
 model User {
   id                 Int          @id @default(autoincrement())
@@ -105,7 +112,7 @@ model Post {
   isPostedAnonymously Boolean   @default(true)
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
-
+  category            Category
   authorId            Int
   author              User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
   purchaseRequests    PurchaseRequest[]
