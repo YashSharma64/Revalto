@@ -21,19 +21,10 @@ export default function Navbar() {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-        setUserName("");
-        setUserEmail("");
       }
     };
 
     checkUser();
-    window.addEventListener("storage", checkUser);
-    const interval = setInterval(checkUser, 1000);
-
-    return () => {
-      window.removeEventListener("storage", checkUser);
-      clearInterval(interval);
-    };
   }, []);
 
   return (
@@ -42,15 +33,13 @@ export default function Navbar() {
         <div className="flex items-center gap-2 sm:gap-3 md:gap-4 justify-between py-3 sm:py-4 w-full">
           {/* Logo Section */}
           <div 
-            className="flex items-center gap-2 sm:gap-3 shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex items-center gap-1.5 sm:gap-2 shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate("/")}
           >
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <RevaltoLogoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-gray-900 flex-shrink-0" />
-              <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight whitespace-nowrap">
-                Revalto
-              </span>
-            </div>
+            <RevaltoLogoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-gray-900 flex-shrink-0" />
+            <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight whitespace-nowrap">
+              Revalto
+            </span>
           </div>
 
           {/* Location Button - Hidden on mobile */}
