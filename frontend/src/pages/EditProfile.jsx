@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import { api } from "@/components/services/api";
+import Navbar from "@/components/Common/Navbar";
+import { api } from "@/Services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

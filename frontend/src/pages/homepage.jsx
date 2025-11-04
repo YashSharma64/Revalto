@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import Posts from "@/components/Posts";
-import CategoryNavbar from "@/components/CategoryNavbar";
+import Navbar from "@/components/Common/Navbar";
+import HeroSection from "@/components/Features/HeroSection";
+import Posts from "@/components/Features/ProductCard";
+import CategoryNavbar from "@/components/Common/CategoryNavbar";
 
 
 export default function Homepage() {

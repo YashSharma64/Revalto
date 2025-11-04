@@ -9,7 +9,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { api } from "./services/api"
+import { api } from "@/Services/api"
 import { useNavigate } from "react-router-dom"
 
 function AuthForm({ className, onSubmit, mode = "login", ...props }) {

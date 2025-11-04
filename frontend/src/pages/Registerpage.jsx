@@ -1,5 +1,5 @@
-import LoginForm from "@/components/login-form.jsx";
-import Navbar from "@/components/Navbar";
+import LoginForm from "@/components/Authentication/login-form.jsx";
+import Navbar from "@/components/Common/Navbar";
 
 export default function RegisterPage() {
   return (
