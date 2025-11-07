@@ -91,7 +91,7 @@ export default function EditProfile() {
     } else {
       dataToSend.roomNumber = null;
     }
-    const response = await api.put("/user/profile", dataToSend, { withCredentials: true });
+    const response = await api.put("/users/profile", dataToSend, { withCredentials: true });
     if (response.status === 200 || response.status === 201) {
       localStorage.setItem("user", JSON.stringify(response.data.user || response.data));
       alert("Profile updated successfully!");
@@ -151,10 +151,6 @@ export default function EditProfile() {
           {/* Form Fields */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Username</label>
-                <Input name="userName" value={formData.userName} onChange={handleChange} required className="h-10" />
-              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Name</label>
                 <Input name="name" value={formData.name} onChange={handleChange} className="h-10" />
