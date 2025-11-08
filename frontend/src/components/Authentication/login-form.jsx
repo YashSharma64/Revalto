@@ -38,7 +38,7 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
       } else {
         const form = e.currentTarget;
         const data = Object.fromEntries(new FormData(form).entries());
-        console.log(`${mode} form submit`, data);
+        // console.log(`${mode} form submit`, data);
 
         const endpoint = isLogin ? "/login" : "/register";
         const response = await api.post(endpoint, data, { withCredentials: true });
