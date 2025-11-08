@@ -1,31 +1,36 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 import RevaltoLogoIcon from "@/assets/RevaltoLogo";
 import LocationIcon from "@/assets/LocationIcon";
 import SearchIcon from "@/assets/SearchIcon";
 import UserDropdown from "./UserDropdown";
 
 export default function Navbar() {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [userName, setUserName] = useState("");
+  // const [userEmail, setUserEmail] = useState("");
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useAuth(); // Get user from context
+  const isLoggedIn = !!user; // Check if user exists
+  const userName = user?.userName || user?.name || "";
+  const userEmail = user?.email || "";
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkUser = () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        setUserName(user.userName || user.name || "");
-        setUserEmail(user.email || "");
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    };
+  // useEffect(() => {
+  //   const checkUser = () => {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser) {
+  //       const user = JSON.parse(storedUser);
+  //       setUserName(user.userName || user.name || "");
+  //       setUserEmail(user.email || "");
+  //       setIsLoggedIn(true);
+  //     } else {
+  //       setIsLoggedIn(false);
+  //     }
+  //   };
 
-    checkUser();
-  }, []);
+  //   checkUser();
+  // }, []);
 
   return (
     <div className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">

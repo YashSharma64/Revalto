@@ -4,6 +4,7 @@ import Navbar from "@/components/Common/Navbar";
 import { api } from "@/Services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
 
 const ANONYMOUS_IMAGES = [
   "https://api.dicebear.com/7.x/avataaars/svg?seed=anonymous1",
@@ -22,6 +23,7 @@ export default function EditProfile() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const { user, updateUser } = useAuth();
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [uploadedImageFile, setUploadedImageFile] = useState(null);
   const [formData, setFormData] = useState({
@@ -32,9 +34,10 @@ export default function EditProfile() {
   });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
+    // const storedUser = localStorage.getItem("user");
+    // if (storedUser) {
+    // const user = JSON.parse(storedUser);
+    if(user){
       setFormData({
         userName: user.userName || "", name: user.name || "", email: user.email || "",
         password: "", gender: user.gender || "", phone: user.phone || "",
@@ -46,7 +49,7 @@ export default function EditProfile() {
     } else {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -93,7 +96,12 @@ export default function EditProfile() {
     }
     const response = await api.put("/users/profile", dataToSend, { withCredentials: true });
     if (response.status === 200 || response.status === 201) {
-      localStorage.setItem("user", JSON.stringify(response.data.user || response.data));
+      const updatedMinimalUser = {
+        id: response.data.user.id,
+        userName: response.data.user.userName,
+        email: response.data.user.email
+      };
+      updateUser(updatedMinimalUser); // update context
       alert("Profile updated successfully!");
       navigate("/");
     } else {

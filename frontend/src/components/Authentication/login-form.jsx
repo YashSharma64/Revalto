@@ -11,10 +11,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { api } from "@/Services/api"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext";
 
 function AuthForm({ className, onSubmit, mode = "login", ...props }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGitHubLoading, setIsGitHubLoading] = useState(false);
+  const { login } = useAuth(); // login function from context
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -43,8 +45,16 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
         console.log("Server response:", response.data);
 
         if (response.status === 200 || response.status === 201) {
-          console.log(`${isLogin ? "Login" : "Signup"} Successful:`, response.data);
-          localStorage.setItem("user", JSON.stringify(response.data.user));
+          console.log(
+            `${isLogin ? "Login" : "Signup"} Successful:`,
+            response.data
+          );
+          const minimalUser = {
+            id: response.data.user.id,
+            userName: response.data.user.userName,
+            email: response.data.user.email
+          };
+          login( minimalUser ); // Use context to set user state
           navigate("/");
         } else {
           alert(`${isLogin ? "Login" : "Signup"} failed: ${response.data?.message || "Unknown error"}`);
