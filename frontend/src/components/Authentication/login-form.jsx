@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"
 function AuthForm({ className, onSubmit, mode = "login", ...props }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGitHubLoading, setIsGitHubLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const isLogin = mode === "login";
@@ -50,6 +51,7 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
         }
       }
     } catch (err) {
+      setError(err.response?.data?.message || "An unknown error occurred.");
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -125,7 +127,11 @@ function AuthForm({ className, onSubmit, mode = "login", ...props }) {
               : "border-gray-300 focus:border-gray-900 bg-gray-50 focus:bg-white")}
           />
         </Field>
-
+        {error && (
+          <p className={cn("text-sm font-medium", isDarkTheme ? "text-red-400" : "text-red-600")}>
+            {error}
+          </p>
+        )}
         <Field>
           <Button
             type="submit"
