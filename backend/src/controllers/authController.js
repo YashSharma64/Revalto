@@ -34,9 +34,9 @@ export const createUser = async (req, res) => {
          message: 'Only @adypu.edu.in email addresses are allowed.',
     });
     }
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findFirst({
       where: {
-        or: [
+        OR: [
           { userName: userName },
           { email: newEmail }
         ]
