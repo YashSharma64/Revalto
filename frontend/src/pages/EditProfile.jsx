@@ -102,9 +102,10 @@ export default function EditProfile() {
     setLoading(false);
   };
 
-  const currentProfileImage = profileImagePreview || formData.imgUrl || "/user.png";
+  // const currentProfileImage = profileImagePreview || formData.imgUrl || "/user.png";
   const currentAnonymousImage = formData.annonymousImgUrl || ANONYMOUS_IMAGES[0];
-
+  const currentProfileImage =
+    profileImagePreview || formData.imgUrl || currentAnonymousImage || "/user.png";
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
