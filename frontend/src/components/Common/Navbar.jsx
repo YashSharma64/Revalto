@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import RevaltoLogoIcon from "@/assets/RevaltoLogo";
 import LocationIcon from "@/assets/LocationIcon";
@@ -15,6 +15,8 @@ export default function Navbar() {
   const userName = user?.userName || user?.name || "";
   const userEmail = user?.email || "";
   const navigate = useNavigate();
+  const location = useLocation();
+  const isSellActive = location.pathname.startsWith("/sell");
 
   // useEffect(() => {
   //   const checkUser = () => {
@@ -33,7 +35,14 @@ export default function Navbar() {
   // }, []);
 
   return (
-    <div className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <div
+  className={`w-full ${
+    isSellActive
+      ? 'bg-gradient-to-r from-blue-100 to-blue-50 border-blue-20'
+      : 'bg-white border-gray-200'
+  }  sticky top-0 z-50`}
+>
+
       <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 w-full">
         <div className="flex items-center gap-2 sm:gap-3 md:gap-4 justify-between py-3 sm:py-4 w-full">
           {/* Logo Section */}
@@ -87,12 +96,13 @@ export default function Navbar() {
                 </span>
               </div>
             )}
-            <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
+            <button className={`cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0`}>
               <img src="/wishlist.png" alt="wishlist" className="h-8 w-8 flex-shrink-0" />
             </button>
             <button
-              className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0"
+              className={`cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0 ${isSellActive ? 'border-b-2 border-blue-600' : ''}`}
               onClick={() => navigate("/sell")}
+              aria-current={isSellActive ? 'page' : undefined}
             >
               <img src="/loan.png" alt="Loan" className="h-8 w-8 flex-shrink-0" />
             </button>
