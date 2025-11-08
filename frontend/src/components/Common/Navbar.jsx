@@ -83,7 +83,7 @@ export default function Navbar() {
               </div>
             )}
             <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
-              <img src="/shopping-cart.png" alt="Shopping cart" className="h-8 w-8 flex-shrink-0" />
+              <img src="/wishlist.png" alt="wishlist" className="h-8 w-8 flex-shrink-0" />
             </button>
             <button className="cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors flex-shrink-0">
               <img src="/loan.png" alt="Loan" className="h-8 w-8 flex-shrink-0" />
