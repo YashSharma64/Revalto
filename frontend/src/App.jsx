@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Registerpage.jsx"
-import Login from "./pages/Loginpage.jsx"; 
-import Homepage from "./pages/Homepage.jsx";
+import Login from "./pages/loginpage.jsx"; 
+import Homepage from "./pages/homepage.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
 import SellPage from "./pages/SellPage.jsx";
 
