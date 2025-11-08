@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RevaltoLogoIcon from "@/assets/RevaltoLogo";
+import Navbar from "@/components/Common/Navbar";
 
 export default function SellPage() {
   const navigate = useNavigate();
@@ -20,29 +21,8 @@ export default function SellPage() {
   return (
     <div className="min-h-screen w-full">
       {/* Top bar */}
-      <div className="w-full bg-gradient-to-b from-[#3b82f6] to-[#60a5f] text-white">
-        <div className="mx-auto max-w-6xl px-3">
-          <div className="flex items-center justify-between h-24">
-            <button
-              onClick={() => navigate(-1)}
-              className="font-poppins text-white/90 hover:text-white text-sm font-medium"
-            >
-              Back
-            </button>
-            <div className="flex items-center gap-3 ml-4">
-              <RevaltoLogoIcon className="w-6 h-6 text-white" />
-              <span className="text-xl font-bold">Revalto</span>
-            </div>
-            <div className="flex items-center gap-2">
-              
-              
-              <span className="text-sm font-medium truncate max-w-[140px]">
-                {userName || "Welcome Guest"}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div><Navbar /></div>
+      
 
       {/* Content - Add krne ke liye products to sell */}
       <div className="mx-auto max-w-3xl px-4 py-20">
