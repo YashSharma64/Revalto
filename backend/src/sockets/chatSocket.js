@@ -51,9 +51,7 @@ export default function chatSocket(io) {
         );
 
         // Broadcast the message to everyone else in the room (excluding sender)
-        socket.broadcast
-          .to(`conversation_${conversationId}`)
-          .emit("receiveMessage", message);
+        io.to(`conversation_${conversationId}`).emit("receiveMessage", message);
 
         // Send acknowledgment back to sender with the message
         callback({ status: "ok", message });
