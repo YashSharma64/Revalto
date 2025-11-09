@@ -167,7 +167,15 @@ export default function ChatRoom({ conversationId: propConversationId }) {
             return;
         }
 
-        socket.emit("joinConversation", Number(conversationId));
+        const joinRoom = () => {
+            console.log(`📞 Joining conversation_${conversationId}`);
+            socket.emit("joinConversation", Number(conversationId));
+        };
+
+        if (isConnected) {
+            joinRoom();
+        }
+        socket.on("connect", joinRoom);
 
         const handleReceive = (msg) => {
         setMessages((prev) => {
@@ -181,8 +189,7 @@ export default function ChatRoom({ conversationId: propConversationId }) {
         socket.on("receiveMessage", handleReceive);
 
         return () => {
-        socket.off("receiveMessage", handleReceive);
-
+            socket.off("receiveMessage", handleReceive);
         };
     }, [socket, conversationId, isConnected]);
 
