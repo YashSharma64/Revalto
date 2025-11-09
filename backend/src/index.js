@@ -9,6 +9,7 @@ import http from "http";
 import { Server } from "socket.io";
 import conversationRoutes from "./routes/conversationRoutes.js"
 import chatSocket from "./sockets/chatSocket.js";
+import { verifySocketToken } from "./middlewares/verifySocketToken.js";
 dotenv.config()
 
 const app = express()
@@ -20,6 +21,8 @@ const io = new Server(server,{
     credentials : true
  }
 })
+
+io.use(verifySocketToken)
 
 app.use(cookieParser())
 

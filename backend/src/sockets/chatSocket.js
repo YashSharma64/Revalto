@@ -1,41 +1,71 @@
 import { prisma } from "../../DB/config.js";
 
 export default function chatSocket(io) {
-    io.on("connection", (socket) => {
-        console.log("⚡ User connected:", socket.id);
+  io.on("connection", (socket) => {
+    console.log(`⚡ User connected: ${socket.id} (userId: ${socket.user?.id})`);
 
-        socket.on("joinConversation", (conversationId) => {
-            socket.join(`conversation_${conversationId}`);
-            console.log(`User joined conversation_${conversationId}`);
+    // Join a conversation room
+    socket.on("joinConversation", (conversationId) => {
+      socket.join(`conversation_${conversationId}`);
+      console.log(`✅ User ${socket.user?.id} joined room conversation_${conversationId}`);
+    });
+
+    // Handle sending a new message
+    socket.on("sendMessage", async (data, callback) => {
+      try {
+        // Always get sender from verified JWT
+        const senderId = socket.user?.id;
+
+        if (!senderId) {
+          console.warn("⚠️ Unauthorized socket tried to send message");
+          return callback({ status: "error", error: "Unauthorized" });
+        }
+
+        const { conversationId, text } = data;
+
+        // Basic validation
+        if (!conversationId || !text?.trim()) {
+          return callback({ status: "error", error: "Invalid message data" });
+        }
+
+        // Save the message to DB
+        const message = await prisma.message.create({
+          data: {
+            conversationId,
+            senderId,
+            text,
+          },
+          include: {
+            sender: {
+              select: {
+                id: true,
+                userName: true,
+                imgUrl: true,
+              },
+            },
+          },
         });
 
-        // Handle incoming message
-        socket.on("sendMessage", async (data) => {
-            const { conversationId, senderId, text } = data;
+        console.log(
+          `💬 New message from user ${senderId} in conversation_${conversationId}`
+        );
 
-            try {
-                const message = await prisma.message.create({
-                data: { conversationId, senderId, text },
-                include: {
-                    sender: {
-                        select: { 
-                            id: true, 
-                            userName: true, 
-                            imgUrl: true },
-                    },
-                },
-                });
+        // Broadcast the message to everyone else in the room (excluding sender)
+        socket.broadcast
+          .to(`conversation_${conversationId}`)
+          .emit("receiveMessage", message);
 
-                // Emit to everyone in the room
-                io.to(`conversation_${conversationId}`).emit("receiveMessage", message);
-            } catch (error) {
-                console.error("Error saving message:", error);
-            }
-        });
+        // Send acknowledgment back to sender with the message
+        callback({ status: "ok", message });
+      } catch (err) {
+        console.error("❌ Error handling sendMessage:", err);
+        callback({ status: "error", error: "Failed to save message" });
+      }
+    });
 
-        // Handle disconnect
-        socket.on("disconnect", () => {
-            console.log("User disconnected:", socket.id);
-        });
+    // Handle user disconnecting
+    socket.on("disconnect", () => {
+      console.log(`❌ User disconnected: ${socket.id}`);
+    });
   });
 }
