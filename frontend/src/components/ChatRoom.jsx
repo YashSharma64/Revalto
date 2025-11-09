@@ -178,12 +178,12 @@ export default function ChatRoom({ conversationId: propConversationId }) {
         socket.on("connect", joinRoom);
 
         const handleReceive = (msg) => {
-        setMessages((prev) => {
-            if (prev.some(m => m.id === msg.id)) {
-            return prev;
-            }
-            return [...prev, msg];
-        });
+            setMessages((prev) => {
+                if (prev.some(m => m.id === msg.id)) {
+                return prev;
+                }
+                return [...prev, msg];
+            });
         };
 
         socket.on("receiveMessage", handleReceive);
@@ -207,26 +207,27 @@ export default function ChatRoom({ conversationId: propConversationId }) {
         }
 
         const messageData = {
-        conversationId: Number(conversationId),
-        text: text.trim(),
+            conversationId: Number(conversationId),
+            text: text.trim(),
         };
 
         const messageText = text.trim();
+        console.log(messageText)
         setText("");
 
         socket.emit("sendMessage", messageData, (ack) => {
-        if (ack && ack.status === "ok") {
-            setMessages((prev) => {
-            if (prev.some(m => m.id === ack.message.id)) {
-                return prev;
+            if (ack && ack.status === "ok") {
+                setMessages((prev) => {
+                    if (prev.some(m => m.id === ack.message.id)) {
+                        return prev;
+                }
+                    return [...prev, ack.message];
+                });
+                setError(null);
+            } else {
+                setError(ack?.error || "Failed to send message. Please try again.");
+                setText(messageText);
             }
-            return [...prev, ack.message];
-            });
-            setError(null);
-        } else {
-            setError(ack?.error || "Failed to send message. Please try again.");
-            setText(messageText);
-        }
         });
     };
 
